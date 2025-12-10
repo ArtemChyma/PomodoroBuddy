@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<head>
+    <title></title>
+    <link rel="stylesheet" href="../static/css/introductory.css">
+</head>
+<body>
+<div class="wrapper">
+    <header>
+        <div class="header-wrapper">
+            <a class="header__logo-text" href="#"><span class="Pomodoro">Pomodoro</span><span class="Buddy">Buddy</span></a>
+            <nav class="header__navigation-bar">
+                <a class="main-page" href="#">Main page</a>
+                <a class="profile" href="#">Profile</a>
+                <a class="settings" href="#">Settings</a>
+            </nav>
+        </div>
+    </header>
+    <div class="show-register--container">
+        <div class="container__left">
+            <div class="description-text">Smart device for <br>a productive education</div>
+            <div class="usage-text">Use <span>Pomodoro</span>Buddy for learning sessions <br>and progress monitoring
+            </div>
+            <a class="starting-button" href><span>Start</span></a>
+        </div>
+        <div class="container__right"></div>
+    </div>
+</div>
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-window">
+        <div class="window-wrapper">
+            <button class="close-modal" id="closeModal">X</button>
+            <span class="signAction">Log in</span>
+            <form class="modal-form" id="loginModalForm" action="#" method="post">
+                <div class="form-component">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" placeholder="your@email.com">
+                </div>
+                <div class="form-component">
+                    <label for="password">Password</label>
+                    <input id="password" name="password" type="password" placeholder="••••••••">
+                    <button type="button" class="toggle-password" id="togglePassword">👁</button>
+                </div>
+                <button type="submit" class="submit-btn">Log In</button>
+            </form>
+            <span class="anotherMethod">Do not have an account yet? <a href="#" id="showRegister">Create account</a></span>
+        </div>
+    </div>
+</div>
+<div class="modal-overlay" id="registerModalOverlay">
+    <div class="modal-window">
+        <div class="window-wrapper">
+            <button class="close-modal" id="registerCloseModal">X</button>
+            <span class="signAction">Registration</span>
+            <form class="modal-form" id="registerModalForm" action="#" method="post">
+                <div class="form-component">
+                    <label for="registerEmail">Email</label>
+                    <input id="registerEmail" name="email" type="email" placeholder="your@email.com">
+                </div>
+                <div class="form-component">
+                    <label for="registerPassword">Password</label>
+                    <input id="registerPassword" name="password" type="password" placeholder="••••••••">
+                </div>
+                <div class="form-component">
+                    <label for="registerPassword2">Repeat Password</label>
+                    <input id="registerPassword2" name="password" type="password" placeholder="••••••••">
+                </div>
+                <button type="submit" class="submit-btn">Register</button>
+            </form>
+            <span class="anotherMethod">Already have an account? <a href="#" id="showLogin">Log In</a></span>
+        </div>
+    </div>
+</div>
+<script src="../static/js/introductory.js"></script>
+</body>
+</html>
