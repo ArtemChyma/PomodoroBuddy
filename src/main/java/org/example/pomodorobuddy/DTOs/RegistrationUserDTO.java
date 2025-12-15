@@ -8,7 +8,6 @@ public class RegistrationUserDTO {
     @NotBlank
     private String email;
 
-    @NotBlank
     @Size(min = 8)
     private String password;
 
