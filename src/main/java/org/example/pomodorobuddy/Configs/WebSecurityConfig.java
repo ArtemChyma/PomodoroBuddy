@@ -13,8 +13,12 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
 
-        http.authorizeHttpRequests((requests) -> requests.requestMatchers("/", "/introductory", "/css/**", "/js/**").permitAll().anyRequest().authenticated())
-                .formLogin(AbstractHttpConfigurer::disable);
+        http
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/register", "/login"))
+                .authorizeHttpRequests((requests) -> requests.requestMatchers("/", "/introductory","/register", "/css/**", "/js/**").permitAll().anyRequest().authenticated())
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable);
         return http.build();
     }
 }

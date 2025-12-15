@@ -37,4 +37,16 @@ public class RegistrationUserDTO {
     public String getPasswordConfirmation() {
         return passwordConfirmation;
     }
+
+    public void setEmail(@NotBlank String email) {
+        this.email = email;
+    }
+
+    public void setPassword(@NotBlank @Size(min = 8) String password) {
+        this.password = password;
+    }
+
+    public void setPasswordConfirmation(String passwordConfirmation) {
+        this.passwordConfirmation = passwordConfirmation;
+    }
 }
