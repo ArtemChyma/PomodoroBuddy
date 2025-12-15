@@ -53,7 +53,7 @@
         <div class="window-wrapper">
             <button class="close-modal" id="registerCloseModal">X</button>
             <span class="signAction">Registration</span>
-            <form class="modal-form" id="registerModalForm" action="#" method="post">
+            <form class="modal-form" id="registerModalForm" th:action="@{/register}" method="post">
                 <div class="form-component">
                     <label for="registerEmail">Email</label>
                     <input id="registerEmail" name="email" type="email" placeholder="your@email.com">
@@ -64,7 +64,7 @@
                 </div>
                 <div class="form-component">
                     <label for="registerPassword2">Repeat Password</label>
-                    <input id="registerPassword2" name="password" type="password" placeholder="••••••••">
+                    <input id="registerPassword2" name="password2" type="password" placeholder="••••••••">
                 </div>
                 <button type="submit" class="submit-btn">Register</button>
             </form>
