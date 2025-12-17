@@ -11,7 +11,7 @@ const showRegister = document.getElementById('showRegister');
 const registerModalOverlay = document.getElementById('registerModalOverlay');
 const registerCloseModal = document.getElementById('registerCloseModal');
 const showLogin = document.getElementById('showLogin');
-
+const fieldErrors = document.querySelector('.fieldErrors')
 
 if (startButton) {
     startButton.addEventListener('click', function (e) {
@@ -172,4 +172,37 @@ function openRegisterModalWindow() {
     setTimeout(() => {
         document.getElementById('registerEmail').focus();
     }, 300);
+}
+
+registerForm.addEventListener('submit', register);
+
+async function register(e) {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(registerForm));
+    console.log(data);
+
+    const res = await fetch('/register', {
+        method: 'POST',
+        headers: {'Content-Type' : 'application/json'},
+        body: JSON.stringify(data)
+    });
+
+
+    if (res.ok) {
+        console.log("Registered");
+    } else {
+        const text = await res.text();
+        console.log(text);
+        if (text === "PASSWORD") {
+            fieldErrors.textContent = 'Password should contain at least 8 characters';
+        } else if(text === "EMAIL_BLANK") {
+            fieldErrors.textContent = 'Email field cannot be empty';
+        } else if(text === "PASSWORDS_NOT_MATCHING"){
+            fieldErrors.textContent = 'Passwords you have provided are not matching';
+        }
+        fieldErrors.classList.add('active');
+
+    }
+
+
 }

@@ -715,3 +715,11 @@ header {
         padding: 14px;
     }
 }
+.fieldErrors {
+    opacity: 0;
+}
+
+.fieldErrors.active {
+    color: #ff1515;
+    opacity: 1;
+}
