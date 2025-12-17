@@ -53,7 +53,7 @@
         <div class="window-wrapper">
             <button class="close-modal" id="registerCloseModal">X</button>
             <span class="signAction">Registration</span>
-            <form class="modal-form" id="registerModalForm" action="#" method="post">
+            <form class="modal-form" id="registerModalForm" th:action="@{/register}" th:method="post">
                 <div class="form-component">
                     <label for="registerEmail">Email</label>
                     <input id="registerEmail" name="email" type="email" placeholder="your@email.com">
