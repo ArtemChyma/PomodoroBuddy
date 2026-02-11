@@ -32,7 +32,7 @@
         <div class="window-wrapper">
             <button class="close-modal" id="closeModal">X</button>
             <span class="signAction">Log in</span>
-            <form class="modal-form" id="loginModalForm" action="#" method="post">
+            <form class="modal-form" id="loginModalForm" th:action="@{/auth/login}" th:method="post">
                 <div class="form-component">
                     <label for="email">Email</label>
                     <input id="email" name="email" type="email" placeholder="your@email.com">
@@ -42,6 +42,7 @@
                     <input id="password" name="password" type="password" placeholder="••••••••">
                     <button type="button" class="toggle-password" id="togglePassword">👁</button>
                 </div>
+                <span class="fieldErrorsLogin"></span>
                 <button type="submit" class="submit-btn">Log In</button>
             </form>
             <span class="anotherMethod">Do not have an account yet? <a href="#" id="showRegister">Create account</a></span>

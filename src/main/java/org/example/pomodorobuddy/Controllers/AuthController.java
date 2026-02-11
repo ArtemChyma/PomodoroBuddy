@@ -1,38 +1,42 @@
 package org.example.pomodorobuddy.Controllers;
 
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.example.pomodorobuddy.DTOs.RegistrationUserDTO;
 import org.example.pomodorobuddy.Entities.User;
 import org.example.pomodorobuddy.Repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @RestController
-public class RegisterController {
-
+@RequestMapping("/auth")
+public class AuthController {
+    private final PasswordEncoder encoder;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-    public RegisterController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    private AuthenticationManager authenticationManager;
+    private static final Logger logger = LogManager.getLogger(AuthController.class);
+    @Autowired
+    public AuthController(PasswordEncoder encoder, UserRepository userRepository,
+                          AuthenticationManager authenticationManager) {
+        this.encoder = encoder;
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
     }
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody RegistrationUserDTO userDTO, BindingResult bindingResult) {
 
-        System.out.println("EMAIL: " + userDTO.getEmail() + "\nPASSWORD: " + userDTO.getPassword()
-        + "\nPASSWORDCONFIRMATION: " + userDTO.getPasswordConfirmation());
-
+        Optional<User> user = userRepository.findByEmail(userDTO.getEmail());
+        if (user.isPresent()) {
+            return ResponseEntity.badRequest().body("USER_TAKEN");
+        }
         if (bindingResult.hasErrors()) {
             System.out.println("Some errors occurred");
             bindingResult.getAllErrors().forEach(error -> System.out.println(error.getDefaultMessage()));
@@ -46,7 +50,7 @@ public class RegisterController {
         if (!userDTO.isPasswordMatch()) {
             return ResponseEntity.badRequest().body("PASSWORDS_NOT_MATCHING");
         }
-        userRepository.save(new User(userDTO.getEmail(), passwordEncoder.encode(userDTO.getPassword())));
+        userRepository.save(new User(userDTO.getEmail(), encoder.encode(userDTO.getPassword()), "ROLE_USER"));
         return ResponseEntity.ok("Registered");
     }
 }

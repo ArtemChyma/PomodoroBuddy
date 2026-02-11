@@ -1,5 +1,3 @@
-console.log('Artem')
-
 const startButton = document.querySelector('.starting-button');
 const modalOverlay = document.getElementById('modalOverlay');
 const closeModal = document.getElementById('closeModal');
@@ -11,7 +9,9 @@ const showRegister = document.getElementById('showRegister');
 const registerModalOverlay = document.getElementById('registerModalOverlay');
 const registerCloseModal = document.getElementById('registerCloseModal');
 const showLogin = document.getElementById('showLogin');
-const fieldErrors = document.querySelector('.fieldErrors')
+const fieldErrors = document.querySelector('.fieldErrors');
+const fieldErrorsLogin = document.querySelector('.fieldErrorsLogin');
+const registerButton = document.getElementById('register-submit-btn');
 
 if (startButton) {
     startButton.addEventListener('click', function (e) {
@@ -26,7 +26,6 @@ if (closeModal && registerCloseModal) {
     registerCloseModal.addEventListener('click', closeRegisterModalWindow);
 }
 
-// Закрытие при клике на оверлей (фон)
 if (modalOverlay && registerModalOverlay) {
     modalOverlay.addEventListener('click', function (e) {
         if (e.target === modalOverlay) {
@@ -40,7 +39,6 @@ if (modalOverlay && registerModalOverlay) {
     });
 }
 
-// Закрытие по клавише Escape
 document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
         closeLogInModalWindow();
@@ -49,7 +47,7 @@ document.addEventListener('keydown', function (e) {
     }
 });
 
-// Переключение видимости пароля
+
 if (togglePassword && passwordInput) {
     togglePassword.addEventListener('click', function () {
         if (passwordInput.type === 'password') {
@@ -62,64 +60,45 @@ if (togglePassword && passwordInput) {
     });
 }
 
-// Обработка формы
+
 const loginForm = document.getElementById('loginModalForm');
-if (loginForm) {
-    loginForm.addEventListener('submit', function (e) {
-        e.preventDefault();
 
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-
-        // Здесь будет ваша логика авторизации
-        console.log('Логин:', {email, password});
-
-        // Пример: закрытие модалки после успешного входа
-        // closeModalWindow();
-        // alert('Welcome back!');
-    });
-}
 
 const registerForm = document.getElementById('registerModalForm');
-
 // Кнопка "Create account"
 if (showRegister) {
     showRegister.addEventListener('click', function (e) {
         e.preventDefault();
-        // Здесь можно добавить переход на форму регистрации
-        console.log('Переход на регистрацию');
+
         openRegisterModalWindow();
-        // Например: открыть другое модальное окно
     });
 }
 
 if (showLogin) {
     showLogin.addEventListener('click', function (e) {
         e.preventDefault();
-        // Здесь можно добавить переход на форму регистрации
-        console.log('Переход на регистрацию');
+
         openLoginModalWindow();
-        // Например: открыть другое модальное окно
+
     });
 }
 
-// Функция закрытия модального окна
+
 function closeLogInModalWindow() {
-    // Убираем затемнение
+
     wrapper.classList.remove('blurred');
 
-    // Скрываем модальное окно
     modalOverlay.classList.remove('active');
 
-    // Возвращаем скролл
+
     document.body.style.overflow = '';
 
-    // Сбрасываем форму
+
     if (loginForm) {
         loginForm.reset();
     }
 
-    // Возвращаем пароль в скрытый режим
+
     if (passwordInput && togglePassword) {
         passwordInput.type = 'password';
         togglePassword.textContent = '👁';
@@ -129,16 +108,22 @@ function closeLogInModalWindow() {
 function closeRegisterModalWindow() {
     wrapper.classList.remove('blurred');
 
-    // Скрываем модальное окно
     registerModalOverlay.classList.remove('active');
 
-    // Возвращаем скролл
     document.body.style.overflow = '';
 
-    // Сбрасываем форму
     if (registerForm) {
         registerForm.reset();
+        if (registerButton.textContent === "Completed") {
+            registerButton.textContent = "Register";
+            registerButton.style.background = "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+        }
     }
+    if (fieldErrors) {
+        fieldErrors.classList.remove("active");
+        fieldErrors.textContent = "";
+    }
+
 }
 
 function openLoginModalWindow() {
@@ -179,30 +164,36 @@ registerForm.addEventListener('submit', register);
 async function register(e) {
     e.preventDefault();
     const data = Object.fromEntries(new FormData(registerForm));
-    console.log(data);
 
-    const res = await fetch('/register', {
+
+    const res = await fetch('/auth/register', {
         method: 'POST',
         headers: {'Content-Type' : 'application/json'},
         body: JSON.stringify(data)
     });
-
-
     if (res.ok) {
-        console.log("Registered");
+
+        registerButton.classList.add("success");
+        registerButton.textContent = "Completed";
+
     } else {
         const text = await res.text();
-        console.log(text);
-        if (text === "PASSWORD") {
-            fieldErrors.textContent = 'Password should contain at least 8 characters';
-        } else if(text === "EMAIL_BLANK") {
-            fieldErrors.textContent = 'Email field cannot be empty';
-        } else if(text === "PASSWORDS_NOT_MATCHING"){
-            fieldErrors.textContent = 'Passwords you have provided are not matching';
+
+        switch (text) {
+            case "PASSWORD":
+                fieldErrors.textContent = 'Password should contain at least 8 characters';
+                break;
+            case "EMAIL_BLANK":
+                fieldErrors.textContent = 'Email field cannot be empty';
+                break;
+            case "PASSWORDS_NOT_MATCHING":
+                fieldErrors.textContent = 'Passwords you have provided are not matching';
+                break;
+            case "USER_TAKEN":
+                fieldErrors.textContent = 'User with such email already exists';
+                break;
         }
         fieldErrors.classList.add('active');
 
     }
-
-
 }

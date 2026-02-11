@@ -649,7 +649,7 @@ header {
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease, transform 4s ease;
     letter-spacing: 0.5px;
     margin-top: 8px;
 }
@@ -663,6 +663,9 @@ header {
     transform: translateY(0);
 }
 
+.submit-btn.success {
+    background: linear-gradient(135deg, #58c734, #1e7200);
+}
 /* Ссылка на создание аккаунта */
 .anotherMethod {
     display: block;
@@ -715,11 +718,11 @@ header {
         padding: 14px;
     }
 }
-.fieldErrors {
+.fieldErrors, .fieldErrorsLogin {
     opacity: 0;
 }
 
-.fieldErrors.active {
+.fieldErrors.active, .fieldErrorsLogin.active {
     color: #ff1515;
     opacity: 1;
 }
