@@ -20,9 +20,20 @@ public class User {
     @Column(name = "password")
     private String password;
     private String roles;
+    @Column(unique = true)
+    private String googleId;
+    private String userImage; //path to image in the storage local or remote
+    private String fullName;
     public User(String email, String password, String roles) {
         this.email = email;
         this.password = password;
         this.roles = roles;
+    }
+
+    public User(String email, String roles, String googleId, String userImage) {
+        this.email = email;
+        this.roles = roles;
+        this.googleId = googleId;
+        this.userImage = userImage;
     }
 }
