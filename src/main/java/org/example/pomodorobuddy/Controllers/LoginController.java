@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.annotation.RequestScope;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/auth")
@@ -30,14 +32,20 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute LoginUserDTO userDTO, HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword())
-        );
-        System.out.println(auth.isAuthenticated());
-        SecurityContext context = SecurityContextHolder.createEmptyContext();
-        context.setAuthentication(auth);
-        securityContextRepository.saveContext(context, request, response);
-        return "redirect:/home/user";
+    public String login(@ModelAttribute LoginUserDTO userDTO, HttpServletRequest request, HttpServletResponse response, RedirectAttributes redirectAttrs) {
+        try {
+            Authentication auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword())
+            );
+
+            SecurityContext context = SecurityContextHolder.createEmptyContext();
+            context.setAuthentication(auth);
+            securityContextRepository.saveContext(context, request, response);
+            return "redirect:/home/user";
+        } catch (AuthenticationException e) {
+            redirectAttrs.addFlashAttribute("fieldLoginError", "fieldLoginError");
+            return "redirect:/";
+        }
+
     }
 }

@@ -45,7 +45,9 @@ public class WebSecurityConfig {
                         .loginPage("/")
                         .userInfoEndpoint(userInfo -> userInfo.oidcUserService(customOidcUserService()))
                         .defaultSuccessUrl("/home/user", true))
-                .formLogin(AbstractHttpConfigurer::disable)
+                .formLogin(l -> l
+                        .loginPage("/")
+                        .defaultSuccessUrl("/home/user"))
                 .logout(AbstractHttpConfigurer::disable)
                 .authenticationProvider(authenticationProvider());
         return http.build();

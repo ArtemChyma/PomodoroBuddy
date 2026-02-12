@@ -12,6 +12,13 @@ const showLogin = document.getElementById('showLogin');
 const fieldErrors = document.querySelector('.fieldErrors');
 const fieldErrorsLogin = document.querySelector('.fieldErrorsLogin');
 const registerButton = document.getElementById('register-submit-btn');
+const fieldLoginError = document.querySelector('.fieldErrorsLogin');
+
+
+console.log(fieldLoginError);
+if (fieldLoginError) {
+    openLoginModalWindow();
+}
 
 if (startButton) {
     startButton.addEventListener('click', function (e) {
@@ -20,7 +27,6 @@ if (startButton) {
     });
 }
 
-// Закрытие модального окна
 if (closeModal && registerCloseModal) {
     closeModal.addEventListener('click', closeLogInModalWindow);
     registerCloseModal.addEventListener('click', closeRegisterModalWindow);
@@ -65,7 +71,7 @@ const loginForm = document.getElementById('loginModalForm');
 
 
 const registerForm = document.getElementById('registerModalForm');
-// Кнопка "Create account"
+
 if (showRegister) {
     showRegister.addEventListener('click', function (e) {
         e.preventDefault();

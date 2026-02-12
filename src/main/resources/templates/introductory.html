@@ -42,7 +42,7 @@
                     <input id="password" name="password" type="password" placeholder="••••••••">
                     <button type="button" class="toggle-password" id="togglePassword">👁</button>
                 </div>
-                <span class="fieldErrorsLogin"></span>
+                <span class="fieldErrorsLogin" th:if="${fieldLoginError}">There is no user with such email and password</span>
                 <button type="submit" class="submit-btn">Log In</button>
             </form>
             <span class="anotherMethod">Do not have an account yet? <a href="#" id="showRegister">Create account</a></span>

@@ -722,11 +722,15 @@ header {
         padding: 14px;
     }
 }
-.fieldErrors, .fieldErrorsLogin {
+.fieldErrors {
     opacity: 0;
 }
 
-.fieldErrors.active, .fieldErrorsLogin.active {
+.fieldErrors.active {
     color: #ff1515;
     opacity: 1;
+}
+
+.fieldErrorsLogin {
+    color: #ff1515;
 }
